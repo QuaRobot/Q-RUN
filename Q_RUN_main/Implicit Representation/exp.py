@@ -227,7 +227,6 @@ if __name__ == "__main__":
                       use_cuda=args.use_cuda)
     trainer.run()
 
-    # 可视化
     # checkpoint = torch.load("./sound/checkpoint/siren.pth")
     # model.load_state_dict(checkpoint['model_state_dict'])
     model_input, ground_truth = next(iter(dataloader))
@@ -248,3 +247,4 @@ if __name__ == "__main__":
         axes[1].plot(coords.squeeze().detach().cpu().numpy(), ground_truth.squeeze().detach().numpy())
     plt.show()
     # wavfile.write('./wave/output.wav', AudioFile('./wave/gt_bach.wav').rate,model_output.squeeze().detach().cpu().numpy())
+
