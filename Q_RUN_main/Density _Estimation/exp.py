@@ -363,7 +363,6 @@ class MLP_ReLU(nn.Module):
 class MLP_Fourier(nn.Module):
     def __init__(self):
         super().__init__()
-        # 这里用一个简化的Fourier特征映射代替
         self.frequency_matrix = torch.randn(32, 1).cuda() # 32 frequencies
         self.linear1 = nn.Linear(64, 64)
         self.linear2 = nn.Linear(64, 1)
@@ -378,7 +377,6 @@ class MLP_Fourier(nn.Module):
         return self.softplus(x)
 
 
-# Q_RUN 和 PWLNN 你之前给的也可以照搬，我这里直接示例：
 
 class SimpleMLP(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
@@ -631,7 +629,6 @@ def test_model_timing(model_class, device, epochs=3000):
     return train_time, test_time, num_params
 
 
-# 主流程示例
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model_classes = {
@@ -662,4 +659,5 @@ for name, cls in model_classes.items():
 print("\nAll results:")
 for name, res in results.items():
     print(f"{name}: train {res['train_time']:.2f}s | test {res['test_time']:.4f}s | params {res['num_params']}")
+
 
