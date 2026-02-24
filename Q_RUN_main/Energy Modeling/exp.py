@@ -229,10 +229,12 @@ class RFF(nn.Module):
 
 class Q_RUN(nn.Module):
     def __init__(self, input_dim=6, hidden_features=35, out_features=1):
+        super().__init__()
+
         self.net = nn.Sequential(
 
-            Q_RUN(input_dim, hidden_features),
-            Q_RUN(hidden_features, hidden_features),
+            Q_RUN_layer(input_dim, hidden_features),
+            Q_RUN_layer(hidden_features, hidden_features),
             nn.Linear(hidden_features, out_features),
 
         )
@@ -292,7 +294,6 @@ def get_model(name, input_dim, output_dim):
     else:
         raise ValueError(f"Unknown model: {name}")
 
-# ----------------- 训练函数 ----------------- #
 def train(model, train_loader, test_loader, positions_train, energy_train, forces_train, args):
     mse_loss = nn.MSELoss()
     force_loss_weight = 100
@@ -383,10 +384,11 @@ if __name__ == "__main__":
     parser.add_argument("--lr", type=float, default=1e-3)
     args = parser.parse_args()
 
-    input_dim = 18 if args.dataset == "two_h2o" else 6  # 根据预处理保持为6维
+    input_dim = 18 if args.dataset == "two_h2o" else 6  
     output_dim = 1
 
     train_loader, test_loader, pos, ene, frc = load_data(args.dataset, args.batch_size)
     model = get_model(args.model, input_dim=input_dim, output_dim=output_dim)
     print(f"Model has {sum(p.numel() for p in model.parameters() if p.requires_grad):,} parameters")
     train(model, train_loader, test_loader, pos, ene, frc, args)
+
